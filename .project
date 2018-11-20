@@ -14,4 +14,16 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>jfreechart-1.0.19</name>
+			<type>2</type>
+			<location>C:/Users/ASUS/jfreechart-1.0.19</location>
+		</link>
+		<link>
+			<name>source</name>
+			<type>2</type>
+			<location>C:/Users/ASUS/jfreechart-1.0.19/source</location>
+		</link>
+	</linkedResources>
 </projectDescription>

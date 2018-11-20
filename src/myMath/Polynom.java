@@ -1,10 +1,27 @@
 package myMath;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
+
+import javax.imageio.ImageIO;
+
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYSplineRenderer;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 import myMath.Monom;
 
@@ -440,4 +457,47 @@ public class Polynom implements Polynom_able {
 		return str;
 	}
 
+	
+	public void plot(double x1, double x2) {
+		double xRange = x2 - x1;
+		double bin = xRange / 11.;
+
+	    final XYSeries series = new XYSeries("Plot");
+	    for (int i = 0; i < 11; i++) {
+	    	double curr_x = x1 + i * bin;
+	    	double curr_y = f(curr_x);
+	        series.add(curr_x, curr_y);
+	    }
+	    XYDataset ds = new XYSeriesCollection(series);
+		try {
+			drawChart(toString(),1000,1000, ds);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static void drawChart(String title, int width, int height, XYDataset ds) throws IOException {
+		  // Create plot
+		  NumberAxis xAxis = new NumberAxis("x");
+		  NumberAxis yAxis = new NumberAxis("y");
+		  XYSplineRenderer renderer = new XYSplineRenderer();
+		  XYPlot plot = new XYPlot(ds, xAxis, yAxis, renderer);
+		  plot.setBackgroundPaint(Color.lightGray);
+		  plot.setDomainGridlinePaint(Color.white);
+		  plot.setRangeGridlinePaint(Color.white);
+
+		  // Create chart
+		  JFreeChart chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+		  ChartUtilities.applyCurrentTheme(chart);
+		  ChartPanel chartPanel = new ChartPanel(chart, false);
+
+		  // Draw png
+		  BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);
+		  Graphics graphics = bi.getGraphics();
+		  chartPanel.setBounds(0, 0, width, height);
+		  chartPanel.paint(graphics);
+		  String filename = title + ".png";
+		  ImageIO.write(bi, "png", new File(filename));
+		  System.out.println("Saved plot to " + filename);
+		}
 }
