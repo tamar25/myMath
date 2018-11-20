@@ -433,7 +433,7 @@ public class Polynom implements Polynom_able {
 			}
 		}
 		for (int i = 0; i < to_delete.size(); i++) {
-			_polynom.remove(i);
+			_polynom.remove((int)(to_delete.get(i)));
 		}
 	}
 
